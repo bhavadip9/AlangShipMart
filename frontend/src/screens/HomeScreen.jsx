@@ -61,7 +61,7 @@ function HomeScreen() {
             }
 
         };
-        console.log("Hello6");
+
         fetchData();
     }, [])
     return (
@@ -69,6 +69,7 @@ function HomeScreen() {
             <Helmet>
                 <title>AlangShipMart</title>
             </Helmet>
+
             <h1>Featured Products </h1>
             <div className='productsCard'>
                 {
