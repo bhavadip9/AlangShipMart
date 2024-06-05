@@ -1,4 +1,5 @@
-import React from 'react'
+import Axios from "axios";
+import { useState } from "react";
 import Container from "react-bootstrap/Container"
 import Button from 'react-bootstrap/esm/Button'
 import Form from "react-bootstrap/Form"
@@ -9,6 +10,24 @@ const SigninScreen = () => {
     const { search } = useLocation();
     const redirectInUrl = new URLSearchParams(search).get('redirect')
     const redirect = redirectInUrl ? redirectInUrl : '/';
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
+
+
+        try {
+            const { data } = await Axios.post('http://localhost:5000/api/users/signin', {
+                email,
+                password,
+            })
+            console.log(data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <>
             <Container className="small-container">
@@ -16,14 +35,14 @@ const SigninScreen = () => {
                     <title>Sign In</title>
                 </Helmet>
                 <h1 className='my-3'>Sign In</h1>
-                <Form>
+                <Form onSubmit={submitHandler}>
                     <Form.Group className='mb-3' controlId="email">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control type='email' required />
+                        <Form.Control type='email' required onChange={(e) => setEmail(e.target.value)} />
                     </Form.Group>
                     <Form.Group className='mb-3' controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control type='password' required />
+                        <Form.Control type='password' required onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
                     <div className='mb-3'>
                         <Button type='submit'>Sign In</Button>

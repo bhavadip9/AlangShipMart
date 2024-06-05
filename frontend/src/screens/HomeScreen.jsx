@@ -14,10 +14,10 @@ import { getError } from '../utils';
 
 const logger = (reducer) => {
     return (state, action) => {
-        console.log('Prev State:', state);
-        console.log('Action:', action);
+        // console.log('Prev State:', state);
+        // console.log('Action:', action);
         const nextState = reducer(state, action);
-        console.log('Next State:', nextState);
+        // console.log('Next State:', nextState);
         return nextState;
     };
 };
