@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import cors from "cors";
-import dotenv from 'dotenv';
-import data from './data.js';
+import dotenv from 'dotenv'
+//import User from './models/userModel.js';
+//import data from './data.js';
 import seedRouter from './routes/seedRoutes.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRoutes.js';
+//import expressAsyncHandler from 'express-async-handler';
 
 dotenv.config();
 
@@ -33,6 +35,7 @@ app.use('/api/users', userRouter);
 app.get('/api/products', cors(), (req, res) => {
     res.send(data.products);
 })
+
 
 
 // app.get('/api/products', cors(), async (req, res) => {
