@@ -16,6 +16,10 @@ import SigninScreen from './screens/SigninScreen';
 import { ToastContainer } from 'react-toastify'
 import ShippingAddressScreen from './screens/ShippingAddressScreen'
 import SignupScreen from './screens/SingupScreen'
+import PaymentScreen from './screens/PaymentScreen'
+import PlaceOrderScreen from './screens/PlaceOrderScreen'
+import OrderScreen from './screens/OrderScreen'
+import OrderHistory from './screens/OrderHistory'
 
 
 function App() {
@@ -26,6 +30,7 @@ function App() {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('paymentMethod');
   }
 
   return (
@@ -79,6 +84,10 @@ function App() {
               <Route path='/signin' element={<SigninScreen></SigninScreen>}></Route>
               <Route path='/signup' element={<SignupScreen></SignupScreen>}></Route>
               <Route path='/shipping' element={<ShippingAddressScreen></ShippingAddressScreen>}></Route>
+              <Route path='/payment' element={<PaymentScreen></PaymentScreen>}></Route>
+              <Route path='/placeorder' element={<PlaceOrderScreen></PlaceOrderScreen>}></Route>
+              <Route path='/order/:id' element={<OrderScreen></OrderScreen>}></Route>
+              <Route path='/orderhistory' element={<OrderHistory></OrderHistory>}></Route>
             </Routes>
           </Container>
         </main>

@@ -79,6 +79,7 @@ const CartScreen = () => {
                                                 </Button>
                                             </Col>
                                         </Row>
+
                                     </ListGroup.Item>
                                 ))
                             }

@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import seedRouter from './routes/seedRoutes.js';
 import productRouter from './routes/productRouter.js';
 import userRouter from './routes/userRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
 //import expressAsyncHandler from 'express-async-handler';
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(cors());
 app.use('/api/seed', seedRouter);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
+app.use('/api/orders', orderRouter);
 
 app.get('/api/products', cors(), (req, res) => {
     res.send(data.products);

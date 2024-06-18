@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { Store } from '../Store'
-import CheckoutStep from './CheckoutStep';
+//import CheckoutStep from "../Componet/CheckoutStep"
 
 const ShippingAddressScreen = () => {
     const navigate = useNavigate();
@@ -19,11 +19,13 @@ const ShippingAddressScreen = () => {
     const [city, setCity] = useState(shippingAddress.city || "")
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || "")
     const [country, setCountry] = useState(shippingAddress.country || "")
+
     useEffect(() => {
         if (!userInfo) {
             navigate('/signin?redirect=/shipping')
         }
     }, [userInfo, navigate])
+
     const submitHandler = (e) => {
         e.preventDefault();
         ctxDispatch({
@@ -56,7 +58,8 @@ const ShippingAddressScreen = () => {
             <Helmet>
                 <title>Shipping Address</title>
             </Helmet>
-            <CheckoutStep step1 step2></CheckoutStep>
+            {/* <CheckoutStep step1 step2 /> */}
+
             <div className='container small-container'>
                 <h1 className='my-3'>Shipping Address</h1>
                 <Form onSubmit={submitHandler}>
