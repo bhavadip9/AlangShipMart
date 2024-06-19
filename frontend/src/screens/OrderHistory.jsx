@@ -6,7 +6,7 @@ import { Store } from '../Store'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { getError } from '../utils'
-//import Button from 'react-bootstrap/esm/Button';
+import Button from 'react-bootstrap/esm/Button'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -34,7 +34,7 @@ const OrderHistory = () => {
             dispatch({ type: 'FETCH_REQUEST' })
             try {
                 const { data } = await axios.get(`http://localhost:5000/api/orders/mine`, {
-                    headers: { Authorization: `Bearer${userInfo.token}` }
+                    headers: { Authorization: `Bearer ${userInfo.token}` }
                 })
                 dispatch({ type: 'FETCH_SUCCESS', payload: data })
 
@@ -47,6 +47,8 @@ const OrderHistory = () => {
         }
         fetchData();
     }, [userInfo])
+
+
     return (
         <div>
             <Helmet>

@@ -119,6 +119,7 @@ orderRouter.post(
 //     })
 // );
 
+
 orderRouter.get(
     '/mine',
     isAuth,
@@ -128,11 +129,14 @@ orderRouter.get(
     })
 );
 
+
+
 orderRouter.get(
     '/:id',
     isAuth,
     expressAsyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id);
+        console.log("data is found")
         if (order) {
             res.send(order);
         } else {

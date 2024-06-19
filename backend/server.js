@@ -34,10 +34,10 @@ app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 
+
 app.get('/api/products', cors(), (req, res) => {
     res.send(data.products);
 })
-
 
 
 // app.get('/api/products', cors(), async (req, res) => {

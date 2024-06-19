@@ -20,6 +20,7 @@ import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
 import OrderHistory from './screens/OrderHistory'
+import ProfileScreen from './screens/ProfileScreen'
 
 
 function App() {
@@ -39,38 +40,41 @@ function App() {
         <div className='d-flex flex-column set-container'>
           <ToastContainer position='bottom-center' limit={1} />
           <header>
-            <Navbar >
+            <Navbar expand="lg" >
               <Container>
                 <LinkContainer to="/">
                   <Navbar.Brand>
                     AlangShipMart
                   </Navbar.Brand>
                 </LinkContainer>
-                <Nav className="me-auto">
-                  <Link to='/cart' className="nav-link">
-                    Cart{
-                      cart.cartItems.length > 0 && (
-                        <Badge pill bg="danger">
-                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                        </Badge>
-                      )
-                    }
-                  </Link>
-                  {userInfo ? (<NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
-                    <LinkContainer to="/profile">
-                      <NavDropdown.Item>User Profile</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/orderhistory">
-                      <NavDropdown.Item>Order History</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Divider />
-                    <Link className='dropdown-item'
-                      to='#signout'
-                      onClick={signoutHandler}>
-                      Sign Out</Link>
+                <Navbar.Toggle aria-controls='basic-navbar-nav' />
+                <Navbar.Collapse id='basic-navbar-nav'>
+                  <Nav className="me-auto w-100 justify-content-end">
+                    <Link to='/cart' className="nav-link">
+                      Cart{
+                        cart.cartItems.length > 0 && (
+                          <Badge pill bg="danger">
+                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          </Badge>
+                        )
+                      }
+                    </Link>
+                    {userInfo ? (<NavDropdown title={userInfo.name} id='basic-nav-dropdown'>
+                      <LinkContainer to="/profile">
+                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/orderhistory">
+                        <NavDropdown.Item>Order History</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                      <Link className='dropdown-item'
+                        to='#signout'
+                        onClick={signoutHandler}>
+                        Sign Out</Link>
 
-                  </NavDropdown>) : (<Link to='/signin' className='nav-link'>Sign In </Link>)}
-                </Nav>
+                    </NavDropdown>) : (<Link to='/signin' className='nav-link'>Sign In </Link>)}
+                  </Nav>
+                </Navbar.Collapse>
               </Container>
             </Navbar>
           </header>
@@ -82,6 +86,7 @@ function App() {
               <Route path='/product/:slug' element={<ProductScreen></ProductScreen>}></Route>
               <Route path='/cart' element={<CartScreen></CartScreen>}></Route>
               <Route path='/signin' element={<SigninScreen></SigninScreen>}></Route>
+              <Route path='/profile' element={<ProfileScreen></ProfileScreen>}></Route>
               <Route path='/signup' element={<SignupScreen></SignupScreen>}></Route>
               <Route path='/shipping' element={<ShippingAddressScreen></ShippingAddressScreen>}></Route>
               <Route path='/payment' element={<PaymentScreen></PaymentScreen>}></Route>
