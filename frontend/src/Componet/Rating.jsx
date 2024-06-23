@@ -2,7 +2,7 @@
 
 const Rating = (props) => {
     // eslint-disable-next-line react/prop-types
-    const { rating, numReviews } = props;
+    const { rating, numReviews, caption } = props;
     return (
         <div>
             <span>
@@ -36,7 +36,12 @@ const Rating = (props) => {
                 }></i>
             </span>
 
-            <span>{numReviews} Reviews</span>
+            {/* <span>{numReviews} Reviews</span> */}
+            {caption ? (
+                <span>{caption}</span>
+            ) : (
+                <span>{' ' + numReviews + ' reviews'}</span>
+            )}
         </div>
     )
 }

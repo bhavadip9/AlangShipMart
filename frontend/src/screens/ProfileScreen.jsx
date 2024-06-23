@@ -1,7 +1,7 @@
 import { useContext, useReducer, useState } from 'react'
 import { Store } from '../Store'
 import { Helmet } from 'react-helmet-async';
-import { Form } from 'react-router-dom';
+import Form from 'react-bootstrap/esm/Form';
 import Button from 'react-bootstrap/esm/Button';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
@@ -75,12 +75,12 @@ const ProfileScreen = () => {
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password"
-                        onChange={(e) => setPassword(e.target.value)} required />
+                        onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Confirm Password</Form.Label>
                     <Form.Control type="password"
-                        onChange={(e) => setConfirmPassword(e.target.value)} required />
+                        onChange={(e) => setConfirmPassword(e.target.value)} />
                 </Form.Group>
                 <div className='mb-3'>
                     <Button type='submit'> Update</Button>

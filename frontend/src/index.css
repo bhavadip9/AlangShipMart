@@ -89,3 +89,26 @@ footer{
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
 }
+
+/*Sidebar */
+.navbar-brand{
+  font-weight: bold;
+}
+.side-navbar{
+  width: 200px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #ebe1e1;
+  transition: 0.5s;
+}
+.side-container{
+  transition: 0.4s;
+}
+.active-cont{
+  margin-left: 200px;
+  margin-top: 50px;
+}
+.active-nav{
+  left: 0;
+}

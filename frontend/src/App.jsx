@@ -9,11 +9,11 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import LinkContainer from 'react-router-bootstrap/LinkContainer'
 import Badge from 'react-bootstrap/esm/Badge';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from './Store';
 import CartScreen from './screens/CartScreen';
 import SigninScreen from './screens/SigninScreen';
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import ShippingAddressScreen from './screens/ShippingAddressScreen'
 import SignupScreen from './screens/SingupScreen'
 import PaymentScreen from './screens/PaymentScreen'
@@ -21,6 +21,16 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
 import OrderHistory from './screens/OrderHistory'
 import ProfileScreen from './screens/ProfileScreen'
+import SearchScreen from './screens/SearchScreen'
+import Button from 'react-bootstrap/esm/Button'
+import { getError } from './utils'
+import axios from 'axios'
+import SearchBox from './Componet/SearchBox'
+import ProtectedRoute from './Componet/ProtectedRoute';
+import DashboardScreen from './screens/DashboardScreen';
+import AdminRoute from './Componet/AdminRoute';
+import ProductListScreen from './screens/ProductListScreen';
+import ProductEditScreen from './screens/ProductEditScreen'
 
 
 function App() {
@@ -32,16 +42,36 @@ function App() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+    window.location.href = '/signin'
   }
+
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false)
+  const [categories, setCategorise] = useState([]);
+
+  useEffect(() => {
+    const featchCategories = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:5000/api/products/categories`)
+        setCategorise(data)
+        //console.log(data)
+
+      } catch (error) {
+        toast.error(getError(error))
+      }
+    };
+    featchCategories();
+  }, [])
 
   return (
     <>
       <BrowserRouter>
-        <div className='d-flex flex-column set-container'>
+        <div className={sidebarIsOpen ? 'd-flex flex-column ' : 'd-flex flex-column set-container'}>
           <ToastContainer position='bottom-center' limit={1} />
           <header>
             <Navbar expand="lg" >
               <Container>
+                <Button variant='light'
+                  onClick={() => setSidebarIsOpen(!sidebarIsOpen)}><i className='fas fa-bars'></i></Button>
                 <LinkContainer to="/">
                   <Navbar.Brand>
                     AlangShipMart
@@ -49,6 +79,7 @@ function App() {
                 </LinkContainer>
                 <Navbar.Toggle aria-controls='basic-navbar-nav' />
                 <Navbar.Collapse id='basic-navbar-nav'>
+                  <SearchBox></SearchBox>
                   <Nav className="me-auto w-100 justify-content-end">
                     <Link to='/cart' className="nav-link">
                       Cart{
@@ -73,29 +104,106 @@ function App() {
                         Sign Out</Link>
 
                     </NavDropdown>) : (<Link to='/signin' className='nav-link'>Sign In </Link>)}
+                    {userInfo && userInfo.isAdmin && (
+                      <NavDropdown title="Admin" id="admin-nav-dropdown">
+                        <LinkContainer to="/admin/dashboard">
+                          <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/products">
+                          <NavDropdown.Item>Products</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/order">
+                          <NavDropdown.Item>Orders</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/user">
+                          <NavDropdown.Item>Users</NavDropdown.Item>
+                        </LinkContainer>
+                      </NavDropdown>
+                    )}
                   </Nav>
                 </Navbar.Collapse>
               </Container>
             </Navbar>
           </header>
         </div>
+        <div className={
+          sidebarIsOpen ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column' :
+            'side-navbar d-flex justify-content-between flex-wrap flex-column'
+        }>
+          <Nav className='flex-column text-black w-100 p-2 mt-3'>
+            <Nav.Item>
+              <strong>Categories</strong>
+            </Nav.Item>
+            {categories.map((category) => (
+              <Nav.Item key={category}>
+                <Link to={`/search?category=${category}`}
+                  onClick={() => setSidebarIsOpen(false)}>{category}</Link>
+              </Nav.Item>
+            ))}
+
+          </Nav>
+        </div>
         <main>
-          <Container>
+
+          <Container className={sidebarIsOpen ? 'active-cont ' : ''}>
             <Routes>
               <Route path='/' element={<HomeScreen></HomeScreen>}></Route>
               <Route path='/product/:slug' element={<ProductScreen></ProductScreen>}></Route>
               <Route path='/cart' element={<CartScreen></CartScreen>}></Route>
               <Route path='/signin' element={<SigninScreen></SigninScreen>}></Route>
-              <Route path='/profile' element={<ProfileScreen></ProfileScreen>}></Route>
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ProfileScreen />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/products"
+                element={
+                  <AdminRoute>
+                    <ProductListScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/product/:id"
+                element={
+                  <AdminRoute>
+                    <ProductEditScreen />
+                  </AdminRoute>
+                }
+              ></Route>
               <Route path='/signup' element={<SignupScreen></SignupScreen>}></Route>
               <Route path='/shipping' element={<ShippingAddressScreen></ShippingAddressScreen>}></Route>
               <Route path='/payment' element={<PaymentScreen></PaymentScreen>}></Route>
               <Route path='/placeorder' element={<PlaceOrderScreen></PlaceOrderScreen>}></Route>
-              <Route path='/order/:id' element={<OrderScreen></OrderScreen>}></Route>
-              <Route path='/orderhistory' element={<OrderHistory></OrderHistory>}></Route>
+              <Route
+                path="/order/:id"
+                element={
+                  <ProtectedRoute>
+                    <OrderScreen />
+                  </ProtectedRoute>
+                }
+              ></Route>
+              <Route path='/orderhistory' element={
+                <ProtectedRoute >
+                  <OrderHistory />
+                </ProtectedRoute>
+              }></Route>
+              {/* <Route path='/search' element={<SearchScreen></SearchScreen>}></Route> */}
+              <Route
+                path="/admin/dashboard"
+                element={
+                  <AdminRoute>
+                    <DashboardScreen />
+                  </AdminRoute>
+                }
+              ></Route>
             </Routes>
           </Container>
-        </main>
+        </main >
         <footer>
           <div className='text-center bottom-50'>
             All are reserved
