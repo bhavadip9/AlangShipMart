@@ -1,79 +1,55 @@
-import mongoose from 'mongoose';
-import express from 'express';
-import cors from "cors";
-import dotenv from 'dotenv'
-//import User from './models/userModel.js';
-//import data from './data.js';
-import seedRouter from './routes/seedRoutes.js';
-import productRouter from './routes/productRouter.js';
-import userRouter from './routes/userRoutes.js';
-import orderRouter from './routes/orderRoutes.js';
-//import expressAsyncHandler from 'express-async-handler';
+import express from "express";
+import path from "path";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import seedRouter from "./routes/seedRoutes.js";
+import productRouter from "./routes/productRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
+import uploadRouter from "./routes/uploadRoutes.js";
 
 dotenv.config();
 
 mongoose
-    .connect(process.env.MONGODB_URI, {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true,
-
-    })
-    .then(() => { console.log('Connected to db') })
-    .catch(err => {
-        console.log(err);
-    })
-
+  .connect('mongodb://127.0.0.1:27017/AlangShipmart')
+  .then(() => {
+    console.log("connected to db");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 
 const app = express();
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-app.use(cors());
-
-app.use('/api/seed', seedRouter);
-app.use('/api/products', productRouter);
-app.use('/api/users', userRouter);
-app.use('/api/orders', orderRouter);
-
-
-app.get('/api/products', cors(), (req, res) => {
-    res.send(data.products);
+app.use(express.urlencoded({ extended: true }));
+app.get("/", (req, res) => {
+  console.log(req)
 })
+app.get("/api/keys/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || "sb");
+});
+app.get("/api/keys/google", (req, res) => {
+  res.send({ key: process.env.GOOGLE_API_KEY || "" });
+});
 
+app.use("/api/upload", uploadRouter);
+app.use("/api/seed", seedRouter);
+app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
+app.use("/api/orders", orderRouter);
 
-// app.get('/api/products', cors(), async (req, res) => {
-//     //res.send(data.products);
-//     await Product.deleteMany({});
-//     const createdProducts = await Product.insertMany(data.products);
-//     res.send({ createdProducts });
-// })
-
-// app.get('/api/products/slug/:slug', cors(), (req, res) => {
-
-//     const product = data.products.find(x => x.slug === req.params.slug)
-//     if (product) {
-//         res.send(product);
-
-//     } else {
-//         res.status(404).send({ message: 'Product is not found' });
-//     }
-// })
-// app.get('/api/products/:_id', cors(), (req, res) => {
-
-//     const product = data.products.find(x => x._id === req.params.id)
-//     if (product) {
-//         res.send(product);
-
-//     } else {
-//         res.status(404).send({ message: 'Product is not found' });
-//     }
-// })
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
+);
 
 app.use((err, req, res, next) => {
-    res.status(500).send({ message: err.message })
-})
+  res.status(500).send({ message: err.message });
+});
 
-const port = process.env.PORT || 5000;
-
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
-    console.log(`Server at connect at http://localhost:${port}`);
-})
+  console.log(`serve at http://localhost:${port}`);
+});
