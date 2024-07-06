@@ -36,6 +36,7 @@ import UserEditScreen from './screens/UserEditScreen';
 //import MapScreen from './screens/MapScreen';
 import ForgetPasswordScreen from './screens/ForgetPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import Footer from './components/Footer.js';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -270,9 +271,7 @@ function App() {
             </Routes>
           </Container>
         </main>
-        <footer>
-          <div className="text-center">All rights reserved</div>
-        </footer>
+        <Footer></Footer>
       </div>
     </BrowserRouter>
   );
