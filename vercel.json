@@ -1,11 +1,11 @@
 {
     "routes": [
         {
-            "src": "./",
+            "src": "/frontend/public/index.html",
             "dest": "/"
         },
         {
-            "src": "./product/:slug",
+            "src": "/product/:slug",
             "dest": "/"
         },
         {
