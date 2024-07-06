@@ -1,11 +1,11 @@
 {
     "routes": [
         {
-            "src": "/",
+            "src": "../",
             "dest": "/"
         },
         {
-            "src": "/product/:slug",
+            "src": "../product/:slug",
             "dest": "/"
         },
         {
