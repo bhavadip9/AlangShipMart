@@ -11,7 +11,7 @@ import uploadRouter from "./routes/uploadRoutes.js";
 dotenv.config();
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/AlangShipmart')
+  .connect('mongodb+srv://paliwalbhai503:yYbrnT9FMO4b9e34@cluster0.ysbkgf4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
   .then(() => {
     console.log("connected to db");
   })

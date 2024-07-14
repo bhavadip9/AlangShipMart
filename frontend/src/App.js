@@ -37,6 +37,7 @@ import UserEditScreen from './screens/UserEditScreen';
 import ForgetPasswordScreen from './screens/ForgetPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import Footer from './components/Footer.js';
+import Chatbot from './components/Chatbot.js'
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -89,7 +90,7 @@ function App() {
               </Button>
 
               <LinkContainer to="/">
-                <Navbar.Brand >Alang Shipmart</Navbar.Brand>
+                <Navbar.Brand >ग्रंथालय</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
@@ -272,6 +273,7 @@ function App() {
           </Container>
         </main>
         <Footer></Footer>
+        <Chatbot />
       </div>
     </BrowserRouter>
   );

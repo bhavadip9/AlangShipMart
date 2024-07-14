@@ -16,12 +16,13 @@ productRouter.post(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
-      name: 'sample name ' + Date.now(),
-      slug: 'sample-name-' + Date.now(),
-      image: '/images/p1.jpg',
+      isbn: '',
+      name: ' ' + Date.now(),
+      slug: '' + Date.now(),
+      image: '/images/p1.jpeg',
       price: 0,
       category: 'sample category',
-      brand: 'sample brand',
+      title: '',
       countInStock: 0,
       rating: 0,
       numReviews: 0,
@@ -40,13 +41,13 @@ productRouter.put(
     const productId = req.params.id;
     const product = await Product.findById(productId);
     if (product) {
-      product.name = req.body.name;
+      product.isbn = req.body.isbn,
+        product.name = req.body.name;
       product.slug = req.body.slug;
       product.price = req.body.price;
       product.image = req.body.image;
       product.images = req.body.images;
       product.category = req.body.category;
-      product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;
       await product.save();
@@ -147,43 +148,43 @@ productRouter.get(
     const queryFilter =
       searchQuery && searchQuery !== 'all'
         ? {
-            name: {
-              $regex: searchQuery,
-              $options: 'i',
-            },
-          }
+          name: {
+            $regex: searchQuery,
+            $options: 'i',
+          },
+        }
         : {};
     const categoryFilter = category && category !== 'all' ? { category } : {};
     const ratingFilter =
       rating && rating !== 'all'
         ? {
-            rating: {
-              $gte: Number(rating),
-            },
-          }
+          rating: {
+            $gte: Number(rating),
+          },
+        }
         : {};
     const priceFilter =
       price && price !== 'all'
         ? {
-            // 1-50
-            price: {
-              $gte: Number(price.split('-')[0]),
-              $lte: Number(price.split('-')[1]),
-            },
-          }
+          // 1-50
+          price: {
+            $gte: Number(price.split('-')[0]),
+            $lte: Number(price.split('-')[1]),
+          },
+        }
         : {};
     const sortOrder =
       order === 'featured'
         ? { featured: -1 }
         : order === 'lowest'
-        ? { price: 1 }
-        : order === 'highest'
-        ? { price: -1 }
-        : order === 'toprated'
-        ? { rating: -1 }
-        : order === 'newest'
-        ? { createdAt: -1 }
-        : { _id: -1 };
+          ? { price: 1 }
+          : order === 'highest'
+            ? { price: -1 }
+            : order === 'toprated'
+              ? { rating: -1 }
+              : order === 'newest'
+                ? { createdAt: -1 }
+                : { _id: -1 };
 
     const products = await Product.find({
       ...queryFilter,

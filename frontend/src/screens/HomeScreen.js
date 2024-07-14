@@ -45,9 +45,9 @@ function HomeScreen() {
   return (
     <div>
       <Helmet>
-        <title>Alang Shipmart</title>
+        <title>ग्रंथालय</title>
       </Helmet>
-      <h1>Featured Products</h1>
+      <h1>Books</h1>
       <div className="products">
         {loading ? (
           <LoadingBox />
