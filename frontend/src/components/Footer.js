@@ -8,7 +8,7 @@ export default function Footer() {
         <footer>
             <div className="div1">
                 <h1>
-                    Alang Shipmart
+                    ग्रंथालय
                 </h1>
                 <p><span>&copy;</span> All rights reserved .2024</p>
             </div>

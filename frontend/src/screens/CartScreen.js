@@ -39,9 +39,9 @@ export default function CartScreen() {
   return (
     <div>
       <Helmet>
-        <title>Shopping Cart</title>
+        <title>Borrow Cart</title>
       </Helmet>
-      <h1>Shopping Cart</h1>
+      <h1>Borrow Cart</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
@@ -59,9 +59,10 @@ export default function CartScreen() {
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                       ></img>{' '}
-                      <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      <Link to={`/product/${item.slug}`}>{item.title}</Link>
                     </Col>
                     <Col md={3}>
+                      <p>No. of Month</p>
                       <Button
                         onClick={() =>
                           updateCartHandler(item, item.quantity - 1)

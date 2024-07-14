@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import { useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -53,15 +53,17 @@ export default function ProductEditScreen() {
       loading: true,
       error: '',
     });
-
+  const [isbn, setIsbn] = useState('');
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
-  const [price, setPrice] = useState('');
+  const [title, setTitle] = useState('');
+
+
   const [image, setImage] = useState('');
   const [images, setImages] = useState([]);
-  const [category, setCategory] = useState('');
+
   const [countInStock, setCountInStock] = useState('');
-  const [brand, setBrand] = useState('');
+
   const [description, setDescription] = useState('');
 
   useEffect(() => {
@@ -69,20 +71,21 @@ export default function ProductEditScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/products/${productId}`);
+        setIsbn(data.isbn)
         setName(data.name);
         setSlug(data.slug);
-        setPrice(data.price);
+        setTitle(data.title)
         setImage(data.image);
         setImages(data.images);
-        setCategory(data.category);
+
         setCountInStock(data.countInStock);
-        setBrand(data.brand);
+
         setDescription(data.description);
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
           type: 'FETCH_FAIL',
-          payload: getError(err),
+          payload: getError(err)
         });
       }
     };
@@ -97,13 +100,12 @@ export default function ProductEditScreen() {
         `/api/products/${productId}`,
         {
           _id: productId,
+          isbn,
           name,
           slug,
-          price,
+          title,
           image,
           images,
-          category,
-          brand,
           countInStock,
           description,
         },
@@ -156,9 +158,9 @@ export default function ProductEditScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Edit Product ₹{productId}</title>
+        <title>Add Books ₹{productId}</title>
       </Helmet>
-      <h1>Edit Product {productId}</h1>
+
 
       {loading ? (
         <LoadingBox></LoadingBox>
@@ -167,13 +169,30 @@ export default function ProductEditScreen() {
       ) : (
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>ISBN</Form.Label>
+            <Form.Control
+              value={isbn}
+              onChange={(e) => setIsbn(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="name">
+            <Form.Label>Author Name</Form.Label>
             <Form.Control
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="title">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </Form.Group>
+
           <Form.Group className="mb-3" controlId="slug">
             <Form.Label>Slug</Form.Label>
             <Form.Control
@@ -182,22 +201,8 @@ export default function ProductEditScreen() {
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Price</Form.Label>
-            <Form.Control
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="image">
-            <Form.Label>Image File</Form.Label>
-            <Form.Control
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              required
-            />
-          </Form.Group>
+
+
           <Form.Group className="mb-3" controlId="imageFile">
             <Form.Label>Upload Image</Form.Label>
             <Form.Control type="file" onChange={uploadFileHandler} />
@@ -227,22 +232,8 @@ export default function ProductEditScreen() {
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="category">
-            <Form.Label>Category</Form.Label>
-            <Form.Control
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="brand">
-            <Form.Label>Brand</Form.Label>
-            <Form.Control
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              required
-            />
-          </Form.Group>
+
+
           <Form.Group className="mb-3" controlId="countInStock">
             <Form.Label>Count In Stock</Form.Label>
             <Form.Control
@@ -261,7 +252,7 @@ export default function ProductEditScreen() {
           </Form.Group>
           <div className="mb-3">
             <Button disabled={loadingUpdate} type="submit">
-              Update
+              ADD
             </Button>
             {loadingUpdate && <LoadingBox></LoadingBox>}
           </div>
